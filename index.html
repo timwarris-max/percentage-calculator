@@ -44,6 +44,10 @@
   .card input:focus {
     outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
   }
+  .card input[type=number]::-webkit-inner-spin-button,
+  .card input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .card input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+  .example { font-size: 0.75rem; color: #6b7280; font-style: italic; margin: -0.2rem 0 0.7rem; }
   .card button {
     margin-top: 0.6rem; padding: 0.4rem 0.85rem;
     border: 1px solid #d1d5db; border-radius: 8px;
@@ -112,31 +116,31 @@ function percentileRank(value, list) {
 
 // --- Data-driven wiring for the 13 simple calculators ---
 const SIMPLE = [
-  { sec: 'everyday', title: 'What % is X of Y', ins: [['part','Part'],['whole','Whole']],
+  { sec: 'everyday', title: 'What % is X of Y', ex: 'e.g. 25 is 12.5% of 200', ins: [['part','Part'],['whole','Whole']],
     out: v => fmt(pctIsXofY(v.part, v.whole)) + '%' },
-  { sec: 'everyday', title: '% of a number', ins: [['percent','Percent'],['number','Number']],
+  { sec: 'everyday', title: '% of a number', ex: 'e.g. 15% of 80 = 12', ins: [['percent','Percent'],['number','Number']],
     out: v => fmt(pctOf(v.number, v.percent)) },
-  { sec: 'everyday', title: '% increase', ins: [['oldV','Old'],['newV','New']],
+  { sec: 'everyday', title: '% increase', ex: 'e.g. 100 → 125 = 25% increase', ins: [['oldV','Old'],['newV','New']],
     out: v => fmt(pctIncrease(v.oldV, v.newV)) + '%' },
-  { sec: 'everyday', title: '% decrease', ins: [['oldV','Old'],['newV','New']],
+  { sec: 'everyday', title: '% decrease', ex: 'e.g. 100 → 80 = 20% decrease', ins: [['oldV','Old'],['newV','New']],
     out: v => fmt(pctDecrease(v.oldV, v.newV)) + '%' },
-  { sec: 'everyday', title: 'Add a %', ins: [['original','Original'],['percent','Percent']],
+  { sec: 'everyday', title: 'Add a %', ex: 'e.g. 200 + 15% = 230', ins: [['original','Original'],['percent','Percent']],
     out: v => fmt(addPct(v.original, v.percent)) },
-  { sec: 'everyday', title: 'Subtract a %', ins: [['original','Original'],['percent','Percent']],
+  { sec: 'everyday', title: 'Subtract a %', ex: 'e.g. 200 − 15% = 170', ins: [['original','Original'],['percent','Percent']],
     out: v => fmt(subPct(v.original, v.percent)) },
-  { sec: 'reverse', title: 'Original before increase', ins: [['final','Final value'],['percent','Percent']],
+  { sec: 'reverse', title: 'Original before increase', ex: 'e.g. 120 after +20% → was 100', ins: [['final','Final value'],['percent','Percent']],
     out: v => fmt(originalBeforeIncrease(v.final, v.percent)) },
-  { sec: 'reverse', title: 'Original before decrease', ins: [['final','Final value'],['percent','Percent']],
+  { sec: 'reverse', title: 'Original before decrease', ex: 'e.g. 80 after −20% → was 100', ins: [['final','Final value'],['percent','Percent']],
     out: v => fmt(originalBeforeDecrease(v.final, v.percent)) },
-  { sec: 'reverse', title: '% difference', ins: [['a','A'],['b','B']],
+  { sec: 'reverse', title: '% difference', ex: 'e.g. 90 vs 100 = 10.53%', ins: [['a','A'],['b','B']],
     out: v => fmt(pctDifference(v.a, v.b)) + '%' },
-  { sec: 'reverse', title: 'Percentage points', ins: [['oldPct','Old %'],['newPct','New %']],
+  { sec: 'reverse', title: 'Percentage points', ex: 'e.g. 4% → 6% = 2 pts (50% relative)', ins: [['oldPct','Old %'],['newPct','New %']],
     out: v => fmt(pctPoints(v.oldPct, v.newPct)) + ' pts (' + fmt(pctPointsRelative(v.oldPct, v.newPct)) + '% relative)' },
-  { sec: 'finance', title: 'Compound growth', ins: [['initial','Initial'],['rate','Rate %'],['periods','Periods']],
+  { sec: 'finance', title: 'Compound growth', ex: 'e.g. 1000 at 5% for 10 periods = 1628.89', ins: [['initial','Initial'],['rate','Rate %'],['periods','Periods']],
     out: v => fmt(compound(v.initial, v.rate, v.periods)) },
-  { sec: 'progress', title: '% remaining', ins: [['remaining','Remaining'],['original','Original']],
+  { sec: 'progress', title: '% remaining', ex: 'e.g. 35 of 50 = 70% remaining', ins: [['remaining','Remaining'],['original','Original']],
     out: v => fmt(pctRemaining(v.remaining, v.original)) + '%' },
-  { sec: 'progress', title: '% completion', ins: [['completed','Completed'],['total','Total']],
+  { sec: 'progress', title: '% completion', ex: 'e.g. 75 of 120 = 62.5%', ins: [['completed','Completed'],['total','Total']],
     out: v => fmt(pctCompletion(v.completed, v.total)) + '%' },
 ];
 
@@ -144,6 +148,10 @@ function renderSimple(cfg) {
   const card = document.createElement('div');
   card.className = 'card';
   const h = document.createElement('h3'); h.textContent = cfg.title; card.appendChild(h);
+  if (cfg.ex) {
+    const ex = document.createElement('div'); ex.className = 'example'; ex.textContent = cfg.ex;
+    card.appendChild(ex);
+  }
   const inputs = {};
   for (const [key, label] of cfg.ins) {
     const l = document.createElement('label'); l.textContent = label;
@@ -170,7 +178,7 @@ SIMPLE.forEach(renderSimple);
 // --- Weighted percentages (dynamic rows) ---
 (function renderWeighted() {
   const card = document.createElement('div'); card.className = 'card';
-  card.innerHTML = '<h3>Weighted percentages</h3>';
+  card.innerHTML = '<h3>Weighted percentages</h3><div class="example">e.g. 40%×90 + 60%×80 = 84</div>';
   const rows = document.createElement('div');
   const res = document.createElement('div'); res.className = 'result';
   const cap = document.createElement('div'); cap.className = 'caption';
@@ -205,7 +213,7 @@ SIMPLE.forEach(renderSimple);
 // --- Percentile ranking (list input) ---
 (function renderPercentile() {
   const card = document.createElement('div'); card.className = 'card';
-  card.innerHTML = '<h3>Percentile ranking</h3>';
+  card.innerHTML = '<h3>Percentile ranking</h3><div class="example">e.g. 90 among 10, 20, 30, 40, 90 = 80th</div>';
   const vl = document.createElement('label'); vl.textContent = 'Your value';
   const vi = document.createElement('input'); vi.type = 'number';
   const ll = document.createElement('label'); ll.textContent = 'Comparison values (comma-separated)';
