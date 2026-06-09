@@ -52,7 +52,7 @@
     text-shadow: 2px 2px 0 #ff0000; margin-bottom: 8px;
     background: #000080; border: 3px outset #c0c0c0; padding: 4px;
   }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: 12px; }
   .card {
     background: #c0c0c0; color: #000; border: 4px outset #ffffff; border-radius: 0;
     padding: 10px; text-align: left;
@@ -91,6 +91,19 @@
   .webring { color: #fff; font-size: 0.85rem; margin: 8px; }
   .webring a { color: #00ffff; }
   footer { color: #fff; font-size: 0.85rem; margin-top: 14px; }
+  @media (max-width: 600px) {
+    body { padding: 8px; font-size: 16px; }
+    h1 { font-size: 1.8rem; word-break: break-word; }
+    .chicken { height: 1.3em; vertical-align: -0.35em; }
+    .banner { border-width: 4px; }
+    .banner img { height: 150px; }
+    .marquee { font-size: 0.8rem; }
+    nav { padding: 6px; }
+    nav a { display: inline-block; margin: 4px 6px; }
+    section > h2 { font-size: 1.25rem; }
+    .grid { grid-template-columns: 1fr; }
+    .construction { font-size: 0.95rem; }
+  }
 </style>
 </head>
 <body>
