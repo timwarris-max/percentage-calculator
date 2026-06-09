@@ -27,9 +27,12 @@
     100% { transform: translateX(0) translateY(0) rotate(0deg); }
   }
   .chicken {
-    display: inline-block; transform-origin: bottom center;
+    display: inline-block; vertical-align: -0.45em; transform-origin: bottom center;
     animation: chickenDance 0.6s ease-in-out infinite;
   }
+  .chicken svg { display: block; width: 1.7em; height: 1.7em; overflow: visible; }
+  .chicken .wing { transform-box: fill-box; transform-origin: 80% 15%; animation: wingFlap 0.3s ease-in-out infinite; }
+  @keyframes wingFlap { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-24deg); } }
   nav {
     position: sticky; top: 0; z-index: 10;
     display: flex; gap: 1.4rem; flex-wrap: wrap;
@@ -86,7 +89,23 @@
 </head>
 <body>
 <div class="banner"><img src="banner.webp" alt="Percentage Calculator banner"></div>
-<h1>Percentage Calculator <span class="chicken" role="img" aria-label="dancing chicken">🐔</span></h1>
+<h1>Percentage Calculator <span class="chicken" role="img" aria-label="dancing chicken"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#f5a623" stroke-width="2.6" stroke-linecap="round">
+    <line x1="28" y1="50" x2="28" y2="59"/>
+    <line x1="37" y1="50" x2="37" y2="59"/>
+    <line x1="28" y1="59" x2="24" y2="62"/><line x1="28" y1="59" x2="32" y2="62"/>
+    <line x1="37" y1="59" x2="33" y2="62"/><line x1="37" y1="59" x2="41" y2="62"/>
+  </g>
+  <path d="M16 40 Q6 30 12 22 Q14 30 22 34 Z" fill="#f5a623"/>
+  <path d="M14 43 Q3 38 6 29 Q12 36 21 39 Z" fill="#e8890c"/>
+  <ellipse cx="32" cy="40" rx="17" ry="14" fill="#fffdf5" stroke="#e6e1d0" stroke-width="1.5"/>
+  <path class="wing" d="M30 34 Q41 34 40 45 Q33 44 27 40 Z" fill="#f3eeda" stroke="#e6e1d0" stroke-width="1.2"/>
+  <circle cx="44" cy="24" r="9.5" fill="#fffdf5" stroke="#e6e1d0" stroke-width="1.5"/>
+  <g fill="#e23b3b"><circle cx="40" cy="15" r="3"/><circle cx="45" cy="13" r="3.2"/><circle cx="50" cy="15" r="2.6"/></g>
+  <path d="M53 23 L60 25 L53 27 Z" fill="#f5a623"/>
+  <path d="M51 28 Q53 33 50 33 Q49 30 49 28 Z" fill="#e23b3b"/>
+  <circle cx="46" cy="23" r="1.7" fill="#2a2a2a"/>
+</svg></span></h1>
 <nav>
   <a href="#everyday">Everyday</a>
   <a href="#reverse">Working backwards</a>
