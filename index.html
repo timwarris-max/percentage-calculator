@@ -12,6 +12,11 @@
     max-width: 980px; margin: 0 auto; padding: 1.5rem 1rem 3rem;
     color: #1f2733; background: #f4f5f7; line-height: 1.45;
   }
+  .banner {
+    width: 100%; margin: 0.25rem 0 1rem; border-radius: 12px; overflow: hidden;
+    border: 1px solid #e3e6ea; box-shadow: 0 1px 3px rgba(16,24,40,0.06);
+  }
+  .banner img { display: block; width: 100%; height: 260px; object-fit: cover; object-position: center 28%; }
   h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.4px; color: #111827; margin: 0.25rem 0 1rem; }
   nav {
     position: sticky; top: 0; z-index: 10;
@@ -68,6 +73,7 @@
 </style>
 </head>
 <body>
+<div class="banner"><img src="banner.webp" alt="Percentage Calculator banner"></div>
 <h1>Percentage Calculator</h1>
 <nav>
   <a href="#everyday">Everyday</a>
