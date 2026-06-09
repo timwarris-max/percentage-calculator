@@ -6,87 +6,117 @@
 <title>Percentage Calculator</title>
 <style>
   * { box-sizing: border-box; }
-  html { font-size: 19px; }
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    max-width: 980px; margin: 0 auto; padding: 1.5rem 1rem 3rem;
-    color: #1f2733; background: #f4f5f7; line-height: 1.45;
+    font-family: "Comic Sans MS", "Comic Sans", "Times New Roman", cursive;
+    margin: 0; padding: 12px; font-size: 18px; text-align: center;
+    color: #ffff00; background-color: #008080;
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 38px, rgba(0,0,0,0.10) 38px 40px),
+      repeating-linear-gradient(90deg, transparent 0 38px, rgba(0,0,0,0.10) 38px 40px);
   }
+  .marquee {
+    overflow: hidden; white-space: nowrap;
+    background: #000; color: #00ff00; border: 3px ridge #00ff00;
+    font-family: "Courier New", monospace; font-weight: bold;
+    padding: 4px 0; margin-bottom: 12px;
+  }
+  .marquee span { display: inline-block; padding-left: 100%; animation: marquee 18s linear infinite; }
+  @keyframes marquee { to { transform: translateX(-100%); } }
   .banner {
-    width: 100%; margin: 0.25rem 0 1rem; border-radius: 12px; overflow: hidden;
-    border: 1px solid #e3e6ea; box-shadow: 0 1px 3px rgba(16,24,40,0.06);
+    width: 100%; max-width: 760px; margin: 0 auto 10px;
+    border: 6px ridge #ff00ff; background: #000; padding: 3px;
   }
-  .banner img { display: block; width: 100%; height: 260px; object-fit: cover; object-position: center 28%; }
-  h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.4px; color: #111827; margin: 0.25rem 0 1rem; }
-  .chicken { height: 1.8em; width: auto; vertical-align: -0.55em; }
+  .banner img { display: block; width: 100%; height: 200px; object-fit: cover; object-position: center 28%; }
+  h1 {
+    font-size: 2.6rem; margin: 8px 0; font-weight: bold; font-family: "Comic Sans MS", cursive;
+    color: #ff00ff; text-shadow: 2px 2px 0 #00ffff, -2px -2px 0 #ffff00, 3px 3px 7px #000;
+  }
+  .chicken { height: 1.5em; width: auto; vertical-align: -0.45em; }
+  .blink { animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .new { color: #ff0000; font-weight: bold; font-family: "Courier New", monospace; }
+  hr.rainbow {
+    height: 6px; border: 0; margin: 14px auto; max-width: 760px;
+    background: linear-gradient(90deg, red, orange, yellow, lime, cyan, blue, violet);
+  }
   nav {
-    position: sticky; top: 0; z-index: 10;
-    display: flex; gap: 1.4rem; flex-wrap: wrap;
-    padding: 0.75rem 0; margin-bottom: 0.5rem;
-    background: #f4f5f7; border-bottom: 1px solid #e3e6ea;
+    margin: 10px auto; padding: 8px; max-width: 760px;
+    background: #000080; border: 4px outset #c0c0c0;
   }
-  nav a { text-decoration: none; color: #2563eb; font-size: 0.9rem; font-weight: 600; }
-  nav a:hover { text-decoration: underline; }
-  section { margin-top: 2rem; }
+  nav a { color: #00ffff; font-weight: bold; text-decoration: underline; margin: 0 8px; font-size: 1rem; }
+  nav a:visited { color: #ff00ff; }
+  nav a:hover { color: #ffff00; background: #000; }
+  section { margin: 18px auto; max-width: 760px; }
   section > h2 {
-    font-size: 1.25rem; color: #111827; font-weight: 700;
-    border-bottom: 2px solid #2563eb; padding-bottom: 0.35rem;
+    font-size: 1.6rem; color: #ffff00; font-family: "Comic Sans MS", cursive;
+    text-shadow: 2px 2px 0 #ff0000; margin-bottom: 8px;
+    background: #000080; border: 3px outset #c0c0c0; padding: 4px;
   }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.1rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
   .card {
-    background: #fff; border: 1px solid #e3e6ea; border-radius: 12px; padding: 1.2rem;
-    box-shadow: 0 1px 3px rgba(16,24,40,0.06);
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    background: #c0c0c0; color: #000; border: 4px outset #ffffff; border-radius: 0;
+    padding: 10px; text-align: left;
   }
-  .card:hover { box-shadow: 0 6px 18px rgba(16,24,40,0.10); border-color: #d3d8df; }
-  .card h3 { margin: 0 0 0.7rem; font-size: 1rem; font-weight: 600; color: #111827; }
-  .card label { display: block; font-size: 0.8rem; margin: 0.45rem 0 0.2rem; color: #5b6472; font-weight: 500; }
+  .card h3 {
+    margin: 0 0 6px; font-size: 1.05rem; font-weight: bold; color: #000080;
+    text-decoration: underline; font-family: "Comic Sans MS", cursive;
+  }
+  .card label { display: block; font-size: 0.85rem; margin: 6px 0 2px; color: #000080; font-weight: bold; }
   .card input {
-    width: 100%; padding: 0.5rem 0.65rem;
-    border: 1px solid #d1d5db; border-radius: 8px;
-    background: #fff; color: #1f2733; font-size: 0.95rem;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-  .card input::placeholder { color: #9aa3b2; }
-  .card input:focus {
-    outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    width: 100%; padding: 4px; border: 2px inset #808080; border-radius: 0;
+    background: #fff; color: #000; font-family: "Courier New", monospace; font-size: 0.95rem;
   }
   .card input[type=number]::-webkit-inner-spin-button,
   .card input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
   .card input[type=number] { -moz-appearance: textfield; appearance: textfield; }
-  .example { font-size: 0.75rem; color: #6b7280; font-style: italic; margin: -0.2rem 0 0.7rem; }
+  .example { font-size: 0.78rem; color: #800000; font-style: italic; margin: 2px 0 6px; }
   .card button {
-    margin-top: 0.6rem; padding: 0.4rem 0.85rem;
-    border: 1px solid #d1d5db; border-radius: 8px;
-    background: #f9fafb; color: #1f2733; font-weight: 600; cursor: pointer;
-    transition: background 0.15s, border-color 0.15s;
+    margin-top: 8px; padding: 3px 10px; border: 3px outset #fff; border-radius: 0;
+    background: #c0c0c0; color: #000; font-weight: bold; cursor: pointer; font-family: "Comic Sans MS", cursive;
   }
-  .card button:hover { background: #f0f2f5; border-color: #c4cad3; }
+  .card button:active { border-style: inset; }
   .result {
-    margin-top: 0.8rem; min-height: 1.5em;
-    font-weight: 700; font-size: 1.1rem; color: #1d4ed8;
+    margin-top: 8px; min-height: 1.4em; font-weight: bold; font-size: 1.2rem;
+    color: #ff0000; font-family: "Courier New", monospace;
   }
-  .caption { font-size: 0.75rem; color: #6b7280; margin-top: 0.4rem; }
-  footer {
-    margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #e3e6ea;
-    font-size: 0.85rem; color: #6b7280;
+  .caption { font-size: 0.75rem; color: #006000; margin-top: 4px; }
+  .construction {
+    font-family: "Comic Sans MS", cursive; font-weight: bold; color: #000; background: #ffff00;
+    border: 3px dashed #ff0000; padding: 6px; margin: 14px auto; max-width: 760px; font-size: 1.1rem;
   }
+  .counter {
+    font-family: "Courier New", monospace; color: #00ff00; background: #000;
+    display: inline-block; padding: 4px 10px; border: 2px solid #00ff00; margin: 8px;
+  }
+  .webring { color: #fff; font-size: 0.85rem; margin: 8px; }
+  .webring a { color: #00ffff; }
+  footer { color: #fff; font-size: 0.85rem; margin-top: 14px; }
 </style>
 </head>
 <body>
+<div class="marquee"><span>★彡 WELCOME TO TIM'S SUPER PERCENTAGE CALCULATOR!!! 彡★ &nbsp;&nbsp; ✩ Best viewed in Netscape Navigator @ 800×600 ✩ &nbsp;&nbsp; ♥ Don't forget to sign my guestbook! ♥ &nbsp;&nbsp; ☆ Powered by a REAL dancing chicken ☆ &nbsp;&nbsp;</span></div>
 <div class="banner"><img src="banner.webp" alt="Percentage Calculator banner"></div>
 <h1>Percentage Calculator <img class="chicken" src="chicken.gif" alt="dancing chicken"></h1>
+<p><span class="new blink">★ NEW! ★</span> &nbsp; <span class="new">Now with 15 amazing calculations!!</span> &nbsp; <span class="new blink">★ NEW! ★</span></p>
+<hr class="rainbow">
 <nav>
   <a href="#everyday">Everyday</a>
   <a href="#reverse">Working backwards</a>
   <a href="#finance">Finance &amp; averages</a>
   <a href="#progress">Progress &amp; standing</a>
 </nav>
+<hr class="rainbow">
 
 <section id="everyday"><h2>Everyday basics</h2><div class="grid"></div></section>
 <section id="reverse"><h2>Working backwards</h2><div class="grid"></div></section>
 <section id="finance"><h2>Finance &amp; averages</h2><div class="grid"></div></section>
 <section id="progress"><h2>Progress &amp; standing</h2><div class="grid"></div></section>
+
+<hr class="rainbow">
+<div class="construction">🚧 ⚠ THIS WEB SITE IS UNDER CONSTRUCTION ⚠ 🚧</div>
+<p><span class="counter">★ VISITORS: 00000420 ★</span></p>
+<p class="webring">[ <a href="#">« Prev</a> | <a href="#">Random</a> | <a href="#">Next »</a> ] &nbsp; The Percentage WebRing™</p>
+<p class="webring"><a href="#">✉ Sign my Guestbook!</a> &nbsp;|&nbsp; <a href="#">E-mail the Webmaster</a></p>
 
 <footer id="selftest">Self-test: not yet run.</footer>
 
